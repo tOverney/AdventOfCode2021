@@ -1,9 +1,14 @@
 package ch.overney.aoc.day1
 
-object Part1 extends App:
-  val measurements = Input.DataEntries.head.map(_.toLong)
-  val res =
-    measurements.zip(measurements.tail).foldLeft(0L) { case (acc, (prev, curr)) =>
-      if (curr > prev) acc + 1L else acc
-    }
-  println(res)
+import ch.overney.aoc.harness.AppWithInput
+
+object Part1 extends AppWithInput("day1", sampleAnswer = 7L):
+
+  override def solve(dataSet: Iterator[String]): Long =
+    val measurements = dataSet.map(_.toLong).toSeq
+
+    measurements
+      .zip(measurements.drop(1))
+      .foldLeft(0L) { case (acc, (prev, curr)) =>
+        if (curr > prev) acc + 1L else acc
+      }
