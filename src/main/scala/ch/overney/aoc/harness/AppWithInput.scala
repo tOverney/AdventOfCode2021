@@ -18,7 +18,7 @@ trait AppWithInput[A](id: String, sampleAnswer: A, extraPaths: IndexedSeq[String
          |expected=$sampleAnswer""".stripMargin
     )
   } else {
-    println("Sample yielded the correct result")
+    println(s"Sample yielded the correct result ($sampleAnswer)")
   }
 
   for {
