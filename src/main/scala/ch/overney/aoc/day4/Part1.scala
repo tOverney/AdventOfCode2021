@@ -7,14 +7,14 @@ object Part1 extends AppWithInput("day4", 4512L):
   override def solve(dataSet: Iterator[String]): Long =
     val (numbers, boards) = BingoBoard.parseAll(dataSet)
 
+    @scala.annotation.tailrec
     def drawNumber(remainingDraws: Seq[Int]): (Int, BingoBoard) =
       assert(remainingDraws.nonEmpty, "No winning boards??")
       val drawnNumber = remainingDraws.head
       boards.foreach(_.markNumber(drawnNumber))
-      boards.find(_.isCompleted) match {
+      boards.find(_.isCompleted) match
         case Some(board) => (drawnNumber, board)
         case None        => drawNumber(remainingDraws.tail)
-      }
 
     val (lastDraw, winningBoard) = drawNumber(numbers)
     println(s"Winner found! Number $lastDraw Board:\n$winningBoard")

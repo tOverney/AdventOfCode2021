@@ -10,12 +10,11 @@ object Part1 extends AppWithInput("day2", 150L):
         val List(direction, rawJump) = instr.split(" ").toList
 
         val jump = rawJump.toLong
-        direction match {
+        direction match
           case "forward" => (h + jump, v)
           case "down"    => (h, v + jump)
           case "up"      => (h, v - jump)
           case _         => sys.error("wut")
-        }
       }
 
     horizontal * depth

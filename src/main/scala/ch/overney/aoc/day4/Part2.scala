@@ -11,11 +11,10 @@ object Part2 extends AppWithInput("day4", 1924L):
       val drawnNumber = remainingDraws.head
       notCompletedBoards.foreach(_.markNumber(drawnNumber))
       val (justCompleted, stillNot) = notCompletedBoards.partition(_.isCompleted)
-      justCompleted match {
+      justCompleted match
         case Seq(board) if stillNot.isEmpty => (drawnNumber, board)
         case _ if stillNot.isEmpty          => sys.error(s">1?? Num: $drawnNumber, boards: $notCompletedBoards")
         case _                              => drawNumber(remainingDraws.tail, stillNot)
-      }
 
     val (lastDraw, winningBoard) = drawNumber(numbers, boards)
     println(s"Last winner found! Number $lastDraw Board:\n$winningBoard")
