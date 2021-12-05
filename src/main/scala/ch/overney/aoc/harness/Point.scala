@@ -16,8 +16,7 @@ final case class Point(x: Long, y: Long):
 
 object Point:
   private def minToMax(a: Long, b: Long): Seq[Long] =
-    val range = Math.min(a, b) to Math.max(a, b)
-    if (b > a) range.reverse else range
+    a to b by (if (b < a) -1 else 1)
 
   def allLines(dataSet: Iterator[String]): Seq[(Point, Point)] =
     dataSet.toSeq.collect { case s"$sx,$sy -> $ex,$ey" =>
