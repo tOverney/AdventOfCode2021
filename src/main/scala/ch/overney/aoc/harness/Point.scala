@@ -5,6 +5,13 @@ import scala.collection.immutable.NumericRange
 final case class Point(x: Long, y: Long):
   import Point._
 
+  def neighbors: Seq[Point] =
+    for {
+      xDelta <- NeighborsDelta
+      yDelta <- NeighborsDelta
+      if xDelta != 0 || yDelta != 0
+    } yield Point(xDelta + x, yDelta + y)
+
   def to(other: Point, handleDiagonal: Boolean): Seq[Point] =
     other match
       case Point(`x`, `y`)    => Seq(this)
@@ -15,6 +22,7 @@ final case class Point(x: Long, y: Long):
       case diagonal => Seq()
 
 object Point:
+  private val NeighborsDelta = Seq(-1L, 0L, 1L)
   private def minToMax(a: Long, b: Long): Seq[Long] =
     a to b by (if (b < a) -1 else 1)
 
