@@ -5,7 +5,7 @@ import ch.overney.aoc.harness.Point
 
 import scala.annotation.tailrec
 
-object Part1 extends AppWithInput("day11", 1656L, extraPaths = IndexedSeq("tiny.txt")):
+object Part1 extends AppWithInput("day11", 1656L, Seq("tiny.txt" -> 259L)):
 
   private def printState(state: Map[Point, Int]): Unit =
     val range = 0 until state.count { case (p, _) => p.x == 0 }

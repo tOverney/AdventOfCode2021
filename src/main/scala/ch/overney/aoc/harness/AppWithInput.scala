@@ -5,26 +5,29 @@ import scala.io.Source
 trait AppWithInput[A](
     id: String,
     sampleAnswer: A,
-    extraPaths: IndexedSeq[String] = IndexedSeq.empty,
+    extraSamples: Seq[(String, A)] = Seq.empty,
     skipValidation: Boolean = false
 ) extends App:
 
   def solve(dataSet: Iterator[String]): A
 
-  val paths = List("sample.txt", "input.txt") ++ extraPaths
-  val sampleDataSet :: dataSets =
+  val (extraPaths, extraAnswers) = extraSamples.unzip
+  val paths = List("input.txt") ++ extraPaths ++ List("sample.txt")
+  val dataSet :: sampleDataSets =
     paths.map(p => Source.fromInputStream(getClass.getClassLoader.getResourceAsStream(s"$id/$p")).getLines)
 
-  val sampleResult = solve(sampleDataSet)
-  if !skipValidation && sampleResult != sampleAnswer then
-    sys.error(
-      s"""Sample dataset does not yield the expected result
-         |found=$sampleResult
-         |expected=$sampleAnswer""".stripMargin
-    )
-  else println(s"Sample yielded the correct result ($sampleAnswer)")
-
   for {
-    (dataSet, idx) <- dataSets.zipWithIndex
-    result = solve(dataSet)
-  } println(s"Dataset#$idx result: $result")
+    ((sampleDs, sampleAnswr), idx) <- sampleDataSets.zip(extraAnswers :+ sampleAnswer).zipWithIndex
+  } {
+    val sampleResult = solve(sampleDs)
+    if !skipValidation && sampleResult != sampleAnswr then
+      sys.error(
+        s"""Sample dataset#$idx does not yield the expected result
+           |found=$sampleResult
+           |expected=$sampleAnswr""".stripMargin
+      )
+    else println(s"Sample yielded the correct result ($sampleAnswr)")
+  }
+
+  val result = solve(dataSet)
+  println(s"Dataset result is: $result")
