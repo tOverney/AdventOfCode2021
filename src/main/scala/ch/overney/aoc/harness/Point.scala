@@ -31,6 +31,10 @@ object Point:
       (Point(sx.toLong, sy.toLong), Point(ex.toLong, ey.toLong))
     }
 
+  def apply(raw: String): Point =
+    val s"$x,$y" = raw
+    Point(x.toLong, y.toLong)
+
   def situationMap(lines: Seq[(Point, Point)], handleDiagonal: Boolean = false): Map[Point, Int] =
     val situationMap = collection.mutable.Map.empty[Point, Int]
     for {
