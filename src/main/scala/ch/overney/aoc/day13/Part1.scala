@@ -11,6 +11,4 @@ object Part1 extends AppWithInput("day13", 17L):
     val (pointsRaw, foldsRaw) = dataSet.toSeq.filterNot(_.isEmpty).partition(_.contains(","))
     val folds = foldsRaw.map(FoldInstruction.apply)
     val points = pointsRaw.map(Point.apply)
-    val folded = folds.foldLeft(points)((ps, instruction) => instruction.fold(ps))
-
-    folded.size
+    folds.head.fold(points).size
