@@ -17,30 +17,26 @@ object Part1 extends AppWithInput("day15", 40L):
     val destination = Point(riskLevels.keys.map(_.x).max, riskLevels.keys.map(_.y).max)
 
     val startingPoint = Point(0L, 0L)
-
-    type Cont = (Point, Set[Point], Long)
-
-    def step(
-        curr: Point,
-        seen: Set[Point],
-        cost: Long,
-        minCostFound: Long = Long.MaxValue
-    ): Either[Long, Seq[Cont]] =
-      if curr == destination then Left(cost)
-      else
-        val newCost = cost + riskLevels(curr)
-        val posibleNexts = curr.orthogonalNeighbors.filter(neigh => !seen(neigh) && riskLevels.contains(neigh))
-        val newContinuations: Seq[Cont] = posibleNexts.map(next => (next, seen + curr, newCost))
-        Right(newContinuations)
+    val accessCost =
+      collection.mutable.Map.from(riskLevels.map { case (p, _) =>
+        p -> (if p == startingPoint then 0 else Long.MaxValue)
+      })
 
     @scala.annotation.tailrec
-    def nextInLine(minCost: Long, conts: Seq[Cont]): Long =
-      val cts: Seq[Cont] = conts.filter(_._3 < minCost)
-      if (cts.isEmpty) minCost
-      else
-        val (c, s, cst) = cts.head
-        val (newMin, newConts) =
-          step(c, s, cst, minCost).fold(f => (Math.min(f, minCost), Seq()), cs => (minCost, cs))
-        nextInLine(newMin, newConts ++ cts.tail)
+    def step(
+        curr: Point,
+        unvisited: Set[Point]
+    ): Long =
+      val currCost = accessCost(curr)
+      //println(s"visting $curr ($currCost)")
+      curr.orthogonalNeighbors
+        .filter(neigh => unvisited(neigh) && riskLevels.contains(neigh))
+        .foreach { p =>
+          val newCost = currCost + riskLevels(p)
+          if newCost < accessCost(p) then accessCost.update(p, newCost)
+        }
+      val newUnvisited = unvisited - curr
+      if curr == destination then accessCost(destination)
+      else step(newUnvisited.minBy(accessCost(_)), newUnvisited)
 
-    nextInLine(Long.MaxValue, Seq((startingPoint, Set(startingPoint), 0L)))
+    step(startingPoint, riskLevels.keySet)
