@@ -5,6 +5,11 @@ import scala.collection.immutable.NumericRange
 final case class Point(x: Long, y: Long):
   import Point._
 
+  def orthogonalNeighbors: Seq[Point] =
+    for {
+      (xDelta, yDelta) <- OrthogonalNeighborsDelta
+    } yield Point(xDelta + x, yDelta + y)
+
   def neighbors: Seq[Point] =
     for {
       xDelta <- NeighborsDelta
@@ -23,6 +28,7 @@ final case class Point(x: Long, y: Long):
 
 object Point:
   private val NeighborsDelta = Seq(-1L, 0L, 1L)
+  private val OrthogonalNeighborsDelta = Seq((-1, 0), (0, -1), (1, 0), (0, 1))
   private def minToMax(a: Long, b: Long): Seq[Long] =
     a to b by (if (b < a) -1 else 1)
 
