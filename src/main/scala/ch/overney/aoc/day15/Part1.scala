@@ -28,7 +28,6 @@ object Part1 extends AppWithInput("day15", 40L):
         unvisited: Set[Point]
     ): Long =
       val currCost = accessCost(curr)
-      //println(s"visting $curr ($currCost)")
       curr.orthogonalNeighbors
         .filter(neigh => unvisited(neigh) && riskLevels.contains(neigh))
         .foreach { p =>
