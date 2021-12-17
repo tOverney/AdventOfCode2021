@@ -5,6 +5,8 @@ import scala.collection.immutable.NumericRange
 final case class Point(x: Long, y: Long):
   import Point._
 
+  def +(other: Point): Point = Point(x + other.x, y + other.y)
+
   def orthogonalNeighbors: Seq[Point] =
     for {
       (xDelta, yDelta) <- OrthogonalNeighborsDelta
