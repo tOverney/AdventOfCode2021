@@ -12,11 +12,11 @@ final case class Point(x: Long, y: Long):
       (xDelta, yDelta) <- OrthogonalNeighborsDelta
     } yield Point(xDelta + x, yDelta + y)
 
-  def neighbors: Seq[Point] =
+  def neighbors(includeSelf: Boolean = false): Seq[Point] =
     for {
-      xDelta <- NeighborsDelta
       yDelta <- NeighborsDelta
-      if xDelta != 0 || yDelta != 0
+      xDelta <- NeighborsDelta
+      if includeSelf || xDelta != 0 || yDelta != 0
     } yield Point(xDelta + x, yDelta + y)
 
   def to(other: Point, handleDiagonal: Boolean): Seq[Point] =

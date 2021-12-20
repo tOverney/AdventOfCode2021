@@ -25,7 +25,7 @@ object Part2 extends AppWithInput("day11", 195L):
         flashing.foreach(state.updateWith(_)(_.map(_ => 0)))
         for {
           cell <- flashing
-          neigh <- cell.neighbors
+          neigh <- cell.neighbors()
         } state.updateWith(neigh)(_.map(v => if (v == 0) 0 else v + 1))
         resolveFlashes(flashes + flashing.size)
 
