@@ -8,8 +8,6 @@ object Part2 extends AppWithInput("day21", 444356092776315L):
     val p1 = PlayerState(dataSet.next, 21)
     val p2 = PlayerState(dataSet.next, 21)
 
-    val die = new DeterministicDie()
-
     var p1Won = 0L
     var p2Won = 0L
 
@@ -28,8 +26,7 @@ object Part2 extends AppWithInput("day21", 444356092776315L):
             Nil
           else Seq((movedPlayer, count))
       val movedPlayer = allPoss.flatten.groupMapReduce(_._1)(_._2)(_ + _)
-      if movedPlayer.isEmpty then println("Done")
-      else roll(otherPlayer, movedPlayer)
+      if movedPlayer.nonEmpty then roll(otherPlayer, movedPlayer)
 
     roll(Map(p1 -> 1L), Map(p2 -> 1L))
 
