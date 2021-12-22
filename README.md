@@ -9,3 +9,7 @@ I then just need to extend this harness trait with:
   * The correct answer to the sample sample dataset
 
 This will then take care of always sanity checking the sample dataset and give me the answer for every other dataset I have configured
+
+## Day22
+
+This solution is extremely slow, it took 42min to run part 2 on my laptop from 2016!
