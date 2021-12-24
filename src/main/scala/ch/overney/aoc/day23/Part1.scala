@@ -1,0 +1,9 @@
+package ch.overney.aoc.day23
+
+import ch.overney.aoc.harness.AppWithInput
+import ch.overney.aoc.harness.Point3d
+
+object Part1 extends AppWithInput("day23", 12521L):
+
+  override def solve(dataSet: Iterator[String]): Long =
+    sys.error("See excel sheet... I solved this part by hand")
