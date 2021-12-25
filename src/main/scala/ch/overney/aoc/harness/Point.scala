@@ -2,10 +2,16 @@ package ch.overney.aoc.harness
 
 import scala.collection.immutable.NumericRange
 
-final case class Point(x: Long, y: Long):
+final case class Point(x: Long, y: Long) extends Ordered[Point]:
   import Point._
 
   def +(other: Point): Point = Point(x + other.x, y + other.y)
+
+  def right(untilBound: Long): Point =
+    if x + 1 >= untilBound then Point(0L, y) else Point(x + 1L, y)
+
+  def down(untilBound: Long): Point =
+    if y + 1 >= untilBound then Point(x, 0L) else Point(x, y + 1L)
 
   def orthogonalNeighbors: Seq[Point] =
     for {
@@ -27,6 +33,10 @@ final case class Point(x: Long, y: Long):
       case Point(otherX, otherY) if handleDiagonal =>
         minToMax(x, otherX).zip(minToMax(y, otherY)).map { case (x, y) => Point(x, y) }
       case diagonal => Seq()
+
+  def compare(other: Point): Int =
+    val yDiff = y.compare(other.y)
+    if yDiff == 0 then x.compare(other.x) else yDiff
 
 object Point:
   private val NeighborsDelta = Seq(-1L, 0L, 1L)
